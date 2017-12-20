@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace Xmu.Crms.HighGrade
+namespace Xmu.Crms.Mobile.HighGrade
 {
     public class seminarController : Controller
     {
