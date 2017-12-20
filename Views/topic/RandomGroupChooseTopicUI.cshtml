@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "RandomGroupChooseTopicUI";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="divport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0">
+    <title>RandomGroupChooseTopicUI2</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/RandomGroupChooseTopicUI2.css"></link>
+</head>
+
+<body>
+    <!--设置左上角的usersIcon-->
+    <div class="blueUsersDiv">
+        <img src="../Content/themes/users.png" class='blueUsersIcon' />
+        <strong class="title">请为您的队伍选题</strong>
+    </div>
+
+    <!--细线，hr不好设置css，用一个高度很小的div来代替-->
+    <div class="hrDiv">
+    </div>
+
+    <!--当选题未选完时框是蓝色的，要增加新框就直接复制-->
+    <div id="topic"></div>
+    <!--<div class="blueTopicDiv" id="click5">-->
+    <!--<span class="topic">话题A</span>-->
+    <!--<div class="hrVertical"> </div>-->
+    <!--<span class="topicName">领域模型设计</span>-->
+    <!--&lt;!&ndash;剩余选题数量大于等于2时&ndash;&gt;-->
+    <!--<span class="leftNumWhite">剩余 ： 2/5</span>-->
+    <!--<img src='../Content/themes/九点.png' class="nineIcon"  href="#" onclick="show();"></img>-->
+    <!--<div class="topicDescribeDiv" id="aa" style="display:none ">领域模型设计</div>-->
+    <!--</div>-->
+    <!--<div class="blueTopicDiv">-->
+    <!--<span class="topic">话题B</span>-->
+    <!--<div class="hrVertical"> </div>-->
+    <!--<span class="topicName">包划分</span>-->
+    <!--&lt;!&ndash;剩余选题为1时会变红&ndash;&gt;-->
+    <!--<span class="leftNumRed">剩余 ： 1/5</span>-->
+    <!--<img src='../Content/themes/九点.png' class="nineIcon"></img>-->
+    <!--</div>-->
+    <!--无剩余名额时选题框为灰色-->
+    <div class="greyTopicDiv">
+        <span class="topic">话题C</span>
+        <div class="hrVertical"> </div>
+        <span class="topicName">界面设计</span>
+        <span class="leftNumWhite">剩余 ： 0/5</span>
+        <img src='../Content/themes/ninedot.png' class="nineIcon"></img>
+    </div>
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+        $.ajax({
+            type:'GET',
+            url:"/api/seminar/2/topic",
+            dataType:"json",
+            success:function (data){
+                data.Data.forEach(function (el, i, arr) {
+                    if (arr[i].groupleft == 1) {
+                        $("#topic").append('<div class="blueTopicDiv" id="click5">' +
+                            '<span class="topic" id="' + arr[i].id + '">话题' + arr[i].serial + '</span>' +
+                            ' <div class="hrVertical"> </div>' +
+                            ' <span class="topicName">' + arr[i].name + '</span>' +
+                            ' <span class="leftNumRed">剩余 ： ' + arr[i].groupLeft + "/" + arr[i].groupLimit + '</span>' +
+                            ' <img src="../Content/themes/ninedot.png" class="nineIcon"  href="#" onclick="show();"></img>' +
+                            '<div class="topicDescribeDiv" id="aa" style="display:none ">' + arr[i].description + '</div>' +
+                            '</div>');
+                    }
+                    else{
+                    $("#topic").append('<div class="blueTopicDiv" id="click5">' +
+                        '<span class="topic" id="' + arr[i].id + '">话题' + arr[i].serial + '</span>' +
+                        ' <div class="hrVertical"> </div>' +
+                        ' <span class="topicName">' + arr[i].name + '</span>' +
+                    ' <span class="leftNumWhite">剩余 ： '+ arr[i].groupLeft + "/" + arr[i].groupLimit + '</span>' +
+                    ' <img src="../Content/themes/ninedot.png" class="nineIcon"  href="#" onclick="show();"></img>' +
+                    '<div class="topicDescribeDiv" id="aa" style="display:none ">'+ arr[i].description+ '</div>' +
+                            '</div>');
+                    }
+                });
+            }
+        });
+        $('#click5').click(function(){
+            window.location.href='../group/GroupList';
+            $.ajax({
+                type:'post',
+                url:"/api/group/2/topic ",
+                data:JSON.stringify({
+                    "id": 23,
+                }),
+                async:true,
+                success:function(data) {
+                    if (confirm("确定选择此话题吗？（一旦选定不能修改）")) {
+                        window.location.href='../course/GroupList';
+                    }
+                    else {
+                    }
+                    //alert(result.result);
+                },
+                error:function(){
+
+                }
+            });
+        })
+
+
+
+</script>
+

@@ -1,0 +1,87 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="divport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0">
+    <title>Untitled Document</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Content/ClassManage.css" rel="stylesheet" type="text/css">
+</head>
+<body class="body">
+    <div class="topBox" id="desc">
+
+        <!--<span class="title"> OOAD</span>-->
+        <!--<span class="seminarText">讨论课4</span>-->
+    </div>
+
+
+    <!--讨论课的时间和分组方式-->
+    <div class="clockAndGroupDiv" id="descri">
+        <!--<img src="../Content/themes/clock.png" class="icon">-->
+        <!--<span class="timeText">11月6日-11月12日</span>-->
+
+    </div>
+
+    <div class="clockAndGroupDiv" id="descrip">
+        <!--<img src="../Content/themes/clip.png" class="icon">-->
+        <!--<span class="timeText">随机分组</span>-->
+    </div>
+    <div style="margin-left: 10%;width:90%;">
+        <!--班级Icon及名字,增加新班级就复制一个div-->
+        <div id="description"></div>
+        <!--<A href="javascript:void(0);" onclick="window.location.href='FixedRollStartCallUI.html'">-->
+        <!--<div class="class">-->
+        <!--<img src="../Content/themes/ClassManage.png" class="classIcon">-->
+        <!--<p class="className">班级1</p>-->
+        <!--</div>-->
+        <!--</A>-->
+        <!--<A href="javascript:void(0);" onclick="window.location.href='FixedRollStartCallUI.html'">-->
+        <!--<div class="class">-->
+        <!--<img src="../Content/themes/ClassManage.png" class="classIcon">-->
+        <!--<p class="className">班级2</p>-->
+        <!--</div>-->
+        <!--</A>-->
+        <!--<A href="javascript:void(0);" onclick="window.location.href='FixedRollStartCallUI.html'">-->
+        <!--<div class="class">-->
+        <!--<img src="../Content/themes/ClassManage.png" class="classIcon">-->
+        <!--<p class="className">班级3</p>-->
+        <!--</div>-->
+        <!--</A>-->
+    </div>
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: "/api/course/2/seminar/current",
+            dataType: "json",
+            success: function (data) {
+                $("#desc").append("" +
+                    "<span class='title'> " + data.Data.name + "</span>" +
+                    "<span class='seminarText'> " + data.Data.name + "</span>");
+                $("#descri").append("" +
+                    " <img src='../Content/themes/clock.png' class='icon'>" +
+                    "<span class='timeText'>" + data.Data.startTime + "-" + data.Data.endTime + "</span>");
+                $("#descrip").append("" +
+                    " <img src='../Content/themes/clip.png' class='icon'>" +
+                    "<span class='timeText'>" + data.Data.groupingMethod + "</span>");
+                data.Data.classes.forEach(function (el, i, arr) {
+                    $("#description").append("" +
+                        "  <A href='javascript:void(0);' onclick='test(this)'id='" + arr[i].id + "'>" +
+                        " <div class='class'>" +
+                        " <img src='../Content/themes/ClassManage.png' class='classIcon'>" +
+                        "  <p class='className'>" + arr[i].name + "</p>" +
+                        "  </div>" +
+                        "</A>");
+                });
+            }
+        });
+    })
+    function test(e) {
+        window.location.href = '../class/FixedRollStartCallUI'
+    }
+</script>

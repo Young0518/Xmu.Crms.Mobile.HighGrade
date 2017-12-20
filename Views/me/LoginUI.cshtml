@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "LoginUI";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="divport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0">
+    <title>Untitled Document</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Content/LoginUI.css" rel="stylesheet" type="text/css">
+</head>
+<body class="body">
+    <div class="PictureDiv">
+        <!-- 背景图的div -->
+        <img class="bulb" src="../Content/themes/bulb.png" />
+        <img src="../Content/themes/background.jpg" class="Picture" />
+        <div class="title">请先登录</div>
+    </div>
+    <div class="hrDiv"></div>
+    <form class="mainView" id="myform">
+        <div class="phoneID">手机号 :</div>
+        <input class="inputPhoneID" id="phone"></input>
+        <div class="password">密码 :</div>
+        <input class="inputPassword" id="password"></input>
+
+        <div class="comfirmDiv">
+            <button class="confirmButton" id="submit" onclick="window.location.href='../me/ChooseCharater'">登录</button>
+        </div>
+
+        <div class="tip1">还没有账号？</div>
+        <A href="javascript:void(0);" onclick="window.location.href='../me/RegisterUI'">
+            <div class="tip2">请先注册</div>
+        </A>
+    </form>
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+        var phone = $("#phone").val();
+        var password = $("#password").val();
+        $('#submit').click(function(){
+            $.ajax({
+                type:'post',
+                url:"/api/signin",
+                contentType: "application/json; charset=utf-8",
+                data:JSON.stringify({
+					phone:phone,
+					password:password,
+            }),
+                async:true,
+                dataType:'json',
+                success:function(data) {
+                    document.location.href='../me/ChooseCharacter';
+                   alert("请求成功");
+                },
+                error:function(){
+                }
+            });
+        })
+    })
+</script>
+
+
+

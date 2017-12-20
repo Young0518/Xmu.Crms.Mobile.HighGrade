@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="divport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0">
+    <title>Untitled Document</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Content/Seminar.css" rel="stylesheet" type="text/css">
+</head>
+<body class="body">
+    <div class="topBox" id="descrip">
+
+    </div>
+    <A href="javascript:void(0);" onclick="window.location.href='GradePresentation.html'">
+        <div class="ScoreBox">
+            <span class="ScoreText">打分</span>
+        </div>
+    </A>
+    <A href="javascript:void(0);" onclick="window.location.href='/Shared/ClassManage'">
+        <div class="CallBox">
+            <span class="CallText">签到</span>
+        </div>
+    </A>
+    <A href="javascript:void(0);" onclick="window.location.href='grouplist.html'">
+        <div class="GroupBox">
+            <span class="GroupText">组队和选题</span>
+        </div>
+    </A>
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type:'GET',
+            url:"/api/api/seminar/2",
+            dataType:"json",
+            success:function (result){
+                $("#descrip").append('<span class="title">' +"result.Data.Seminar.courseName”+'</span>'+
+                '<span class="title2">' +"result.Data.name"+'</span>');
+            }
+        });
+    })
+</script>
+

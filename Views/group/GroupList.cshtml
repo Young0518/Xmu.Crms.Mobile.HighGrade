@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "GroupList";
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="divport" content="width=device-width,
+                                     initial-scale=1.0,
+                                     maximum-scale=1.0">
+    <title>Untitled Document</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Content/GroupList.css" rel="stylesheet" type="text/css">
+</head>
+<body class="fullbackground">
+    <div class="columndisplay" id="descrip">
+        <!--<img class="UsersIcon" src="../Content/themes/users.png"></img>-->
+        <!--<label class="seminarblackword">讨论课4<br/>固定分组</label>-->
+    </div>
+
+    <div class="whiteword">
+        <div class="panel-body" id="resign">
+            <div class="column4">分组信息：</div>
+            <div class="column3"><button class="btnquit" id="click4" style="display: none">辞职</button></div>
+        </div>
+    </div>
+
+    <div id="group"></div>
+    <!--<div class="block">-->
+    <!--<div class="panel-body">-->
+    <!--<div class="column1"><img src="../Content/themes/user.png"></img></div>-->
+    <!--<div class="column2">name<br/>number</div>-->
+    <!--<div class="column3 rightblueword" id="aa" style="display: none ">队长</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="block">-->
+    <!--<div class="panel-body">-->
+    <!--<div class="column1"><img src="../Content/themes/user.png"></img></div>-->
+    <!--<div class="column2">name<br/>number</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="whiteword">
+        <div class="panel-body">
+            <div>选题：</div>
+        </div>
+    </div>
+    <div class="middlediv" id="leader">
+        <button class="btnleader" id="click3" style="display: ">成为队长</button>
+        <button class="btnleader" id="click5" style="display:none " onclick="window.location.href='../topic/RandomGroupChooseTopicUI'">选题</button>
+        <p class="middlegreyword" id="p" style="display: ">您的队伍还没有队长，您可以选择成为队长。</p>
+    </div>
+
+</body>
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type:'GET',
+            url:"/api/seminar/2",
+            dataType:"json",
+            success:function (data){
+                    $("#descrip").append("" +
+                        "<img class='UsersIcon' src='../Content/themes/users.png'></img>"+
+                       " <label class='seminarblackword'>"+ data.Data.name+ "<br/>"+ data.Data.groupingMethod+ "</label>");
+            }
+        });
+        $.ajax({
+            type:'GET',
+            url:"/api/group/2",
+            dataType:"json",
+            success:function (data){
+                data.Data.members.forEach(function (el,i,arr) {
+                    $("#group").append("" +
+                        " <div class='block'>"+
+                       " <div class='panel-body' id='"+arr[i].id+"'>"+
+                       " <div class='column1'><img src='../Content/themes/user.png'></img></div>"+
+                       " <div class='column2'>"+ arr[i].name+ "<br/>"+ arr[i].id+ "</div>"+
+                       " <div class='column3 rightblueword' id='aa' style='display: none '>队长</div>"+
+                       " </div>"+
+                       " </div>");
+                });
+            }
+        });
+
+    })
+
+
+
+    $('#click3').click(function(){
+        with(document.getElementById('aa').style){(display="")}
+        with(document.getElementById('click3').style){(display="none")}
+        with(document.getElementById('p').style){(display="none")}
+        with(document.getElementById('click4').style){(display="")}
+        with(document.getElementById('click5').style){(display="")}
+        $.ajax({
+            type:'PUT',
+            url:"/api/group/2",
+            contentType: "application/json; charset=utf-8",
+            data:JSON.stringify({
+                "id": id,
+            }),
+            async:true,
+            success:function(data) {
+                with(document.getElementById('aa').style){(display="")}
+                //alert(result.result);
+            },
+            error:function(){
+                $.alert("系统处理错误");
+            }
+        });
+    })
+
+    $('#click4').click(function(){
+        with(document.getElementById('aa').style){display==""&&(display="none")}
+        with(document.getElementById('click3').style){(display="")}
+        with(document.getElementById('p').style){(display="")}
+        with(document.getElementById('click4').style){(display="none")}
+        with(document.getElementById('click5').style){(display="none")}
+        $.ajax({
+            type:'PUT',
+            url:"/api/group/{groupID}",
+            contentType: "application/json; charset=utf-8",
+            data:JSON.stringify({
+                "id": id,
+            }),
+            async:true,
+            success:function(data) {
+                with(document.getElementById('aa').style){display==""&&(display="none")}
+                //alert(result.result);
+            },
+            error:function(){
+                $.alert("系统处理错误");
+            }
+        });
+    })
+</script>
